@@ -1,11 +1,16 @@
 package com.shopmanagement.service;
 
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
 
 /**
  * Service for sending email notifications
@@ -77,5 +82,46 @@ public class EmailService {
         );
         
         sendEmail(to, subject, body);
+    }
+    
+    /**
+     * Send email with PDF attachment
+     * @param to Recipient email address
+     * @param subject Email subject
+     * @param body Email body
+     * @param attachmentPath Path to the attachment file (URL or file path)
+     */
+    public void sendEmailWithAttachment(String to, String subject, String body, String attachmentPath) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            
+            helper.setFrom(fromEmail);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(body);
+            
+            // Extract file path from URL if needed
+            String filePath = attachmentPath;
+            if (attachmentPath.startsWith("http://") || attachmentPath.startsWith("https://")) {
+                // For local storage, convert URL to file path
+                // This is a simplified approach - in production, you might need to download the file
+                filePath = attachmentPath.replace("http://localhost:8080/uploads/", "uploads/");
+            }
+            
+            File file = new File(filePath);
+            if (file.exists()) {
+                FileSystemResource fileResource = new FileSystemResource(file);
+                helper.addAttachment(file.getName(), fileResource);
+            } else {
+                log.warn("Attachment file not found: {}", filePath);
+            }
+            
+            mailSender.send(message);
+            log.info("Email with attachment sent successfully to: {}", to);
+        } catch (Exception e) {
+            log.error("Failed to send email with attachment to: {}", to, e);
+            throw new RuntimeException("Failed to send email with attachment: " + e.getMessage());
+        }
     }
 }

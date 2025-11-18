@@ -215,4 +215,23 @@ public class NotificationService {
             log.error("Failed to send WhatsApp notification", e);
         }
     }
+    
+    /**
+     * Send invoice notification to customer
+     */
+    @Transactional
+    public void sendInvoiceNotification(Long invoiceId, String channel) {
+        // This method is called from InvoiceController
+        // For WhatsApp, we would integrate with WhatsApp Business API
+        // For now, just log and create notification
+        
+        log.info("Invoice notification would be sent via {} for invoice: {}", channel, invoiceId);
+        
+        createNotification(
+                "Invoice Sent",
+                "Invoice sent via " + channel,
+                "INVOICE_" + channel.toUpperCase(),
+                invoiceId.toString()
+        );
+    }
 }

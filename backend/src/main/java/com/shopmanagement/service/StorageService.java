@@ -70,6 +70,42 @@ public class StorageService {
     }
     
     /**
+     * Upload PDF bytes to storage
+     * @param pdfBytes The PDF content as byte array
+     * @param filePath The path where to store the PDF (e.g., "invoices/INV-001.pdf")
+     * @return The URL of the uploaded PDF
+     */
+    public String uploadPdfBytes(byte[] pdfBytes, String filePath) {
+        try {
+            // Create upload directory if it doesn't exist
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            
+            // Create full path
+            Path fullPath = uploadPath.resolve(filePath);
+            
+            // Create parent directories if they don't exist
+            if (fullPath.getParent() != null && !Files.exists(fullPath.getParent())) {
+                Files.createDirectories(fullPath.getParent());
+            }
+            
+            // Write PDF bytes to file
+            Files.write(fullPath, pdfBytes);
+            
+            // Return URL
+            String fileUrl = baseUrl + "/" + filePath;
+            log.info("PDF uploaded successfully: {}", fileUrl);
+            return fileUrl;
+            
+        } catch (IOException e) {
+            log.error("Failed to upload PDF", e);
+            throw new ValidationException("Failed to upload PDF: " + e.getMessage());
+        }
+    }
+    
+    /**
      * Delete a file from storage
      * @param fileUrl The URL of the file to delete
      */
