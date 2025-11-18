@@ -45,4 +45,6 @@ public class RegisterRequest {
     private String password;
     
     private String logoUrl;
+    
+    private String referralCode;
 }

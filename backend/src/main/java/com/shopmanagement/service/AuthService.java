@@ -34,6 +34,7 @@ public class AuthService {
     private final WalletRepository walletRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider tokenProvider;
+    private final WalletService walletService;
     
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -80,6 +81,18 @@ public class AuthService {
         wallet.setReferralCode(generateUniqueReferralCode());
         
         walletRepository.save(wallet);
+        
+        // Apply referral code if provided
+        if (request.getReferralCode() != null && !request.getReferralCode().trim().isEmpty()) {
+            try {
+                walletService.applyReferralCode(request.getReferralCode(), savedShop.getId());
+                // Credit referral bonus immediately upon successful registration
+                walletService.creditReferralBonus(savedShop.getId());
+            } catch (Exception e) {
+                log.warn("Failed to apply referral code during registration: {}", e.getMessage());
+                // Don't fail registration if referral code is invalid
+            }
+        }
         
         // Authenticate and generate tokens
         Authentication authentication = authenticationManager.authenticate(
