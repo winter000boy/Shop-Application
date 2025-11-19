@@ -6,6 +6,12 @@ import com.shopmanagement.dto.response.ApiResponse;
 import com.shopmanagement.dto.response.ShopProfileResponse;
 import com.shopmanagement.entity.Shop;
 import com.shopmanagement.service.ShopService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/shops")
 @RequiredArgsConstructor
+@Tag(name = "Shop Management", description = "Endpoints for managing shop profile, settings, and logo")
+@SecurityRequirement(name = "bearerAuth")
 public class ShopController {
     
     private final ShopService shopService;

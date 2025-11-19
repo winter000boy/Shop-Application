@@ -7,6 +7,8 @@ import com.shopmanagement.entity.Invoice;
 import com.shopmanagement.service.EmailService;
 import com.shopmanagement.service.InvoiceService;
 import com.shopmanagement.service.NotificationService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,8 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/invoices")
 @RequiredArgsConstructor
+@Tag(name = "Invoices", description = "Endpoints for generating, managing, and sending invoices")
+@SecurityRequirement(name = "bearerAuth")
 public class InvoiceController {
     
     private final InvoiceService invoiceService;

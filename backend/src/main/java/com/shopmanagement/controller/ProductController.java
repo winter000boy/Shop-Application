@@ -6,6 +6,9 @@ import com.shopmanagement.dto.response.ProductResponse;
 import com.shopmanagement.entity.Category;
 import com.shopmanagement.entity.Product;
 import com.shopmanagement.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +26,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
+@Tag(name = "Products", description = "Endpoints for managing shop products including inventory, pricing, and images")
+@SecurityRequirement(name = "bearerAuth")
 public class ProductController {
     
     private final ProductService productService;

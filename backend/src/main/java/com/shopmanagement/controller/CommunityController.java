@@ -8,6 +8,8 @@ import com.shopmanagement.dto.response.ReplyResponse;
 import com.shopmanagement.entity.Post;
 import com.shopmanagement.entity.Reply;
 import com.shopmanagement.service.CommunityService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/community")
 @RequiredArgsConstructor
+@Tag(name = "Community", description = "Endpoints for community posts, replies, and discussions")
+@SecurityRequirement(name = "bearerAuth")
 public class CommunityController {
     
     private final CommunityService communityService;

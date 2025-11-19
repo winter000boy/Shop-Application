@@ -6,6 +6,8 @@ import com.shopmanagement.dto.response.StaffPerformanceResponse;
 import com.shopmanagement.dto.response.StaffResponse;
 import com.shopmanagement.entity.Staff;
 import com.shopmanagement.service.StaffService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/staff")
 @RequiredArgsConstructor
+@Tag(name = "Staff Management", description = "Endpoints for managing staff members, assignments, and performance metrics")
+@SecurityRequirement(name = "bearerAuth")
 public class StaffController {
     
     private final StaffService staffService;

@@ -6,6 +6,8 @@ import com.shopmanagement.dto.response.ProductResponse;
 import com.shopmanagement.entity.Category;
 import com.shopmanagement.entity.Product;
 import com.shopmanagement.service.MarketplaceService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/marketplace")
 @RequiredArgsConstructor
+@Tag(name = "Marketplace", description = "Endpoints for browsing marketplace products, categories, and wholesalers")
+@SecurityRequirement(name = "bearerAuth")
 public class MarketplaceController {
     
     private final MarketplaceService marketplaceService;

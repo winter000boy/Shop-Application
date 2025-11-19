@@ -8,6 +8,8 @@ import com.shopmanagement.entity.Wallet;
 import com.shopmanagement.repository.ShopRepository;
 import com.shopmanagement.security.ShopContext;
 import com.shopmanagement.service.WalletService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/wallet")
 @RequiredArgsConstructor
+@Tag(name = "Wallet & Referrals", description = "Endpoints for managing wallet balance, transactions, and referral system")
+@SecurityRequirement(name = "bearerAuth")
 public class WalletController {
     
     private final WalletService walletService;

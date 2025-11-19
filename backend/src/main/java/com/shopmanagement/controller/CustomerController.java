@@ -7,6 +7,8 @@ import com.shopmanagement.dto.response.RepairOrderSummaryResponse;
 import com.shopmanagement.entity.Customer;
 import com.shopmanagement.entity.RepairOrder;
 import com.shopmanagement.service.CustomerService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
+@Tag(name = "Customers", description = "Endpoints for managing customer information and repair history")
+@SecurityRequirement(name = "bearerAuth")
 public class CustomerController {
     
     private final CustomerService customerService;

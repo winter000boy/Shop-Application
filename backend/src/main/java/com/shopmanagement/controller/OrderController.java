@@ -8,6 +8,13 @@ import com.shopmanagement.dto.response.OrderResponse;
 import com.shopmanagement.entity.*;
 import com.shopmanagement.service.NotificationService;
 import com.shopmanagement.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,14 +35,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
+@Tag(name = "Repair Orders", description = "Endpoints for managing repair orders including creation, updates, status tracking, and image uploads")
+@SecurityRequirement(name = "bearerAuth")
 public class OrderController {
     
     private final OrderService orderService;
     private final NotificationService notificationService;
     
-    /**
-     * Get all repair orders with pagination and optional filters
-     */
+    @Operation(
+            summary = "Get all repair orders",
+            description = "Retrieve paginated list of repair orders with optional filters by status, date range, and search query"
+    )
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "200",
+                    description = "Orders retrieved successfully"
+            )
+    })
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'STAFF')")
     public ResponseEntity<ApiResponse<Page<OrderResponse>>> getAllOrders(
@@ -112,9 +128,21 @@ public class OrderController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
     
-    /**
-     * Create a new repair order
-     */
+    @Operation(
+            summary = "Create new repair order",
+            description = "Create a new repair order with device details, customer information, and assigned staff"
+    )
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "201",
+                    description = "Repair order created successfully",
+                    content = @Content(schema = @Schema(implementation = OrderResponse.class))
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid input data"
+            )
+    })
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<OrderResponse>> createOrder(@Valid @RequestBody OrderRequest request) {
