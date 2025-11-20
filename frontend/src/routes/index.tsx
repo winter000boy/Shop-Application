@@ -5,6 +5,7 @@ import { ROUTES } from '../utils/constants';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Dashboard from '../pages/Dashboard';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 const AppRoutes = () => {
   return (
@@ -13,8 +14,15 @@ const AppRoutes = () => {
       <Route path={ROUTES.LOGIN} element={<Login />} />
       <Route path={ROUTES.REGISTER} element={<Register />} />
       
-      {/* Protected routes - will be wrapped with ProtectedRoute in task 15 */}
-      <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+      {/* Protected routes */}
+      <Route
+        path={ROUTES.DASHBOARD}
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
       
       {/* Default redirect */}
       <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
