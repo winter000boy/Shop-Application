@@ -46,6 +46,21 @@ class ProductService {
   async getCategories(): Promise<Category[]> {
     return await apiService.get<Category[]>(API_ENDPOINTS.MARKETPLACE.CATEGORIES);
   }
+
+  async getWholesalers(params?: {
+    latitude?: number;
+    longitude?: number;
+    maxDistance?: number;
+  }): Promise<any[]> {
+    return await apiService.get<any[]>(API_ENDPOINTS.MARKETPLACE.WHOLESALERS, { params });
+  }
+
+  async searchMarketplace(query: string, params?: PaginationParams): Promise<PaginatedResponse<Product>> {
+    return await apiService.get<PaginatedResponse<Product>>(
+      API_ENDPOINTS.MARKETPLACE.SEARCH,
+      { params: { ...params, query } }
+    );
+  }
 }
 
 export const productService = new ProductService();
